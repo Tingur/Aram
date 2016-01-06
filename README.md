@@ -1,2 +1,5 @@
 # EloBuddy
-Projetos para EB
+
+https://www.elobuddy.net
+
+Utilize com sabedoria para evitar bans.
