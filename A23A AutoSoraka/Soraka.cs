@@ -12,7 +12,7 @@ namespace A23A_MultiUtility
         internal static Spell.Targeted W = new Spell.Targeted(SpellSlot.W, 550);
         internal static Spell.Skillshot E = new Spell.Skillshot(SpellSlot.E, 925, SkillShotType.Circular, 500, 1750, 70);
         internal static Spell.Active R = new Spell.Active(SpellSlot.R, int.MaxValue);
-        internal static int[] LevelUps = { 0, 1, 2, 1, 1, 3, 1, 0, 1, 0, 3, 0, 0, 2, 2, 3, 2, 2 };
+        internal static int[] LevelUps = {0, 1, 2, 1, 1, 3, 1, 0, 1, 0, 3, 0, 0, 2, 2, 3, 2, 2};
         internal static AIHeroClient Jho = Player.Instance;
         internal static int TickQ;
         internal static int TickE;
@@ -21,7 +21,7 @@ namespace A23A_MultiUtility
 
         public static void BigodeGrosso()
         {
-            int[] levels = { 0, 0, 0, 0 };
+            int[] levels = {0, 0, 0, 0};
             for (var i = 0; i < Jho.Level; i++)
             {
                 levels[LevelUps[i]] = levels[LevelUps[i]] + 1;
@@ -31,35 +31,51 @@ namespace A23A_MultiUtility
             if (Jho.Spellbook.GetSpell(SpellSlot.E).Level < levels[2]) Jho.Spellbook.LevelSpell(SpellSlot.E);
             if (Jho.Spellbook.GetSpell(SpellSlot.R).Level < levels[3]) Jho.Spellbook.LevelSpell(SpellSlot.R);
         }
+
         public static void PepecaDuMal()
         {
             var alvoe = TargetSelector.GetTarget(E.Range, DamageType.Magical);
-            if (alvoe == null || !alvoe.IsValid() || !alvoe.IsValidTarget() || !E.IsReady() || Jho.ManaPercent <= 30) return;
+            if (alvoe == null || !alvoe.IsValid() || !alvoe.IsValidTarget() || !E.IsReady() || Jho.ManaPercent < 30 ||
+                alvoe.IsZombie)
+                return;
             var prede = E.GetPrediction(alvoe);
             if (prede.HitChance != HitChance.High) return;
-            E.Cast(alvoe.Position);
+            E.Cast(prede.CastPosition);
             TickE = Environment.TickCount;
         }
+
         public static void RespeitaUmoço()
         {
             var alvoq = TargetSelector.GetTarget(Q.Range, DamageType.Magical);
-            if (alvoq == null ||!alvoq.IsValid() || !alvoq.IsValidTarget() || !Q.IsReady() || Jho.ManaPercent <= 10) return;
+            if (alvoq == null || !alvoq.IsValid() || !alvoq.IsValidTarget() || !Q.IsReady() || Jho.ManaPercent < 10 ||
+                alvoq.IsZombie)
+                return;
             var predq = Q.GetPrediction(alvoq);
             if (predq.HitChance != HitChance.High) return;
-            Q.Cast(alvoq.Position);
+            Q.Cast(predq.CastPosition);
             TickQ = Environment.TickCount;
         }
+
         public static void AmuniçocaPica()
         {
-            var morrendo = EntityManager.Heroes.Allies.OrderBy(a => a.Hero).FirstOrDefault(a => !a.IsDead && a.HealthPercent <= 50 && !a.IsRecalling() && !a.IsInShopRange());
-            if (morrendo == null || !R.IsReady() || Jho.Mana <= 100) return;
+            var morrendo =
+                EntityManager.Heroes.Allies.OrderBy(a => a.Hero)
+                    .FirstOrDefault(
+                        a => !a.IsDead && a.HealthPercent < 50 && !a.IsRecalling() && !a.IsInShopRange() && !a.IsZombie);
+            if (morrendo == null || !R.IsReady() || Jho.Mana < 100) return;
             R.Cast();
             TickR = Environment.TickCount;
         }
+
         public static void PatenteAlta()
         {
-            var ferido = EntityManager.Heroes.Allies.OrderBy(a => a.Hero).FirstOrDefault(a => W.IsInRange(a) && a.HealthPercent <= 70 && !a.IsRecalling() && !a.IsInShopRange() && !a.IsMe && !a.IsZombie && a.IsValid && a.IsTargetableToTeam );
-            if (ferido == null || !W.IsReady() || Jho.ManaPercent <= 10 || Jho.HealthPercent <= 10) return;
+            var ferido =
+                EntityManager.Heroes.Allies.OrderBy(a => a.Hero)
+                    .FirstOrDefault(
+                        a =>
+                            W.IsInRange(a) && a.HealthPercent <= 70 && !a.IsRecalling() && !a.IsInShopRange() && !a.IsMe &&
+                            !a.IsZombie && a.IsValid && a.IsTargetableToTeam);
+            if (ferido == null || !W.IsReady() || Jho.ManaPercent < 15 || Jho.HealthPercent < 15) return;
             W.Cast(ferido);
             TickW = Environment.TickCount;
         }
