@@ -226,7 +226,7 @@ namespace A23A_MultiUtility
 
         internal static void ChecarSeguir()
         {
-            if (Fugir) return;
+            if (Fugir || ToNaMerda || Eu.IsRecalling()) return;
             if (Escolhido() == null || Escolhido().IsDead || Escolhido().IsInShopRange() || Escolhido().IsRecalling())
             {
                 ChecarMinion();
