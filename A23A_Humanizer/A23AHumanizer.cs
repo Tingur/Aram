@@ -54,28 +54,28 @@ namespace A23A_Humanizer
             HumMenu.Add("atvHum", new CheckBox("Enable Humanization"));
             HumMenu.Add("enbInf", new CheckBox("Enable Draw Infos"));
             HumMenu.AddSeparator();
-            HumMenu.Add("maxClick", new Slider("Maximo clicks per second", 6, 4, 10));
+            HumMenu.Add("maxClick", new Slider("Max clicks per second", 6, 4, 10));
             HumMenu.AddSeparator();
             var intCl = HumMenu.Add("intClick", new Slider("", 120, 80, 600));
-            intCl.DisplayName = "Set Value for increase Your Ping it is Delay clicks (M/s), Current Value:  " +
+            intCl.DisplayName = "Set Value for increase Your Ping it is Delay Clicks (M/s), Current Value:  " +
                                 (Game.Ping + HumMenu["intClick"].Cast<Slider>().CurrentValue);
             intCl.OnValueChange +=
                 delegate(ValueBase<int> a, ValueBase<int>.ValueChangeArgs b)
                 {
-                    a.DisplayName = "Set Value for increase Your Ping it is Delay clicks (M/s), Current Value:  " +
+                    a.DisplayName = "Set Value for increase Your Ping it is Delay Clicks (M/s), Current Value:  " +
                                     (Game.Ping + HumMenu["intClick"].Cast<Slider>().CurrentValue);
                 };
             HumMenu.AddSeparator();
             var intCa = HumMenu.Add("intCast", new Slider("", 150, 110, 600));
-            intCa.DisplayName = "Set Value for increase Your Ping it is Delay cast (M/s), Current Value:  " +
+            intCa.DisplayName = "Set Value for increase Your Ping it is Delay Cast (M/s), Current Value:  " +
                                 (Game.Ping + HumMenu["intCast"].Cast<Slider>().CurrentValue);
             intCa.OnValueChange +=
                 delegate(ValueBase<int> a, ValueBase<int>.ValueChangeArgs b)
                 {
-                    a.DisplayName = "Set Value for increase Your Ping it is Delay cast (M/s), Current Value:  " +
+                    a.DisplayName = "Set Value for increase Your Ping it is Delay Cast (M/s), Current Value:  " +
                                     (Game.Ping + HumMenu["intCast"].Cast<Slider>().CurrentValue);
                 };
-            HumMenu.AddGroupLabel("Recomendo Max Clicks/s = 6 , Min Delay Cliks = 120, Min Delay Cast = 150");
+            HumMenu.AddGroupLabel("Recomended Max Clicks/s = 6 , Min Delay Cliks = 120, Min Delay Cast = 150");
             HumMenu.AddGroupLabel("More values, more safe. Enjoy.");
         }
 
@@ -113,7 +113,6 @@ namespace A23A_Humanizer
             Drawing.DrawText(Drawing.Width - 200, 180,
                 ClickLastSeg <= HumMenu["maxClick"].Cast<Slider>().CurrentValue ? Color.LawnGreen : Color.Crimson,
                 "Cliks/Cast Last Second: " + ClickLastSeg);
-            //Drawing.DrawText(Drawing.Width - 200, 200, ClickLastSeg <= 7 ? Color.LawnGreen : Color.Crimson,"Safe: " + Safe + " OnHumanizer: " + EnaHum);
             Drawing.DrawText(Drawing.Width - 200, 200, Color.AliceBlue,
                 "Max Cliks/Cast Second: " + MaxClick);
         }
@@ -153,11 +152,11 @@ namespace A23A_Humanizer
                 return;
             }
             if (args.Order != GameObjectOrder.MoveTo) return;
-            if (!args.TargetPosition.IsValid())
+            if (!args.TargetPosition.IsValid(true))
             {
                 args.Process = false;
                 BlockCkick = BlockCkick + 1;
-                Player.IssueOrder(GameObjectOrder.MoveTo, RenewMov(args.TargetPosition, -15, 15));
+                Player.IssueOrder(GameObjectOrder.MoveTo, RenewMov(args.TargetPosition, -500, 500));
                 return;
             }
             Cliks = Cliks + 1;
