@@ -152,7 +152,7 @@ namespace A23A_Humanizer
                 return;
             }
             if (args.Order != GameObjectOrder.MoveTo) return;
-            if (!args.TargetPosition.IsValid(true))
+            if (!args.TargetPosition.IsValid(Game.MapId == GameMapId.SummonersRift))
             {
                 args.Process = false;
                 BlockCkick = BlockCkick + 1;
