@@ -1,5 +1,5 @@
-using AutoSharp.Auto.HowlingAbyss;
-using AutoSharp.Auto.SummonersRift;
+using A23A_MultiUtility..Auto.HowlingAbyss;
+using A23A_MultiUtility..Auto.SummonersRift;
 using EloBuddy;
 
 namespace AutoSharp.Auto
